@@ -6,12 +6,30 @@
 ;; (powerline-default-theme) ;; old theme
 ;; (powerline-center-evil-theme)
 
-(defface MCSH-evil-active-default '((t (:background "grey11" :inherit mode-line)))
+;;; Code:
+
+(defface MCSH-powerline-active1 '((t (:inherit mode-line-inactive)))
+  "Powerline bg 1."
+  :group 'powerline)
+(defface MCSH-powerline-active2 '((t (:inherit powerline-active2)))
+  "Powerline bg 2."
+  :group 'powerline)
+
+(defface MCSH-powerline-inactive1 '((t (:inherit powerline-inactive1)))
+  "Powerline bg 1."
+  :group 'powerline)
+(defface MCSH-powerline-inactive2 '((t (:inherit powerline-inactive2)))
+  "Powerline bg 2."
+  :group 'powerline)
+
+(defface MCSH-evil-active-default '((t (;:background "grey11"
+                                        :inherit mode-line)))
   "Powerline face1 MCSH."
   :group 'powerline)
 
 (defface MCSH-evil-inactive-default
-  '((t (:background "grey22" :inherit mode-line-inactive)))
+  '((t (;:background "grey22"
+        :inherit mode-line-inactive)))
   "Powerline face inactive MCSH 1."
   :group 'powerline)
 
@@ -95,8 +113,8 @@
 		  (:eval
 		   (let* ((active (powerline-selected-window-active))
 			  (mode-line (if active 'mode-line 'mode-line-inactive))
-			  (face1 (if active 'powerline-active1 'powerline-inactive1))
-			  (face2 (if active 'powerline-active2 'powerline-inactive2))
+			  (face1 (if active 'MCSH-powerline-active1 'MCSH-powerline-inactive1))
+			  (face2 (if active 'MCSH-powerline-active2 'MCSH-powerline-inactive2))
 			  (facemode (MCSH-evil-face active))
 			  (separator-left (intern (format "powerline-%s-%s"
 							  (powerline-current-separator)

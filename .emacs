@@ -32,27 +32,32 @@
 (defun day () "Make it usefull in bright enviornment"
        (interactive)
        (disable-all-themes)
-       (load-theme 'leuven))
+       (load-theme 'leuven)
+       (powerline-reset))
 
 (defun afternoon () "Just a darkish theme"
        (interactive)
        (disable-all-themes)
-       (load-theme 'tango-dark))
+       (load-theme 'tango-dark)
+       (powerline-reset))
 
 (defun night () "Take it back!!!"
        (interactive)
        (disable-all-themes)
-       (load-theme 'misterioso))
+       (load-theme 'misterioso)
+       (powerline-reset))
 
 (defun altnight () "For greener nights!"
        (interactive)
        (disable-all-themes)
-       (load-theme 'wombat))
+       (load-theme 'wombat)
+       (powerline-reset))
 
 (defun latenight () "Just a really dark theem"
        (interactive)
        (disable-all-themes)
-       (load-theme 'deeper-blue))
+       (load-theme 'deeper-blue)
+       (powerline-reset))
 
 (defun MCSH/org-reset-agenda-files () "Set back the original agenda files"
        (setq org-agenda-files (list "~/src/TODO.org" "~/src/personal/schedule.org"))
@@ -60,8 +65,7 @@
 
 (defun org-sole-agenda () "Set the current buffer as the only agenda file"
        (interactive)
-       (setq org-agenda-files (list (file-truename (buffer-file-name))))
-       )
+       (setq org-agenda-files (list (file-truename (buffer-file-name)))))
 
 (defun org-default-agenda ()
   (interactive)
@@ -120,7 +124,7 @@
   
 ;; Scaling fonts
 
-(set-face-attribute 'default nil :height 130)
+(set-face-attribute 'default nil :height 110)
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
 (defun zoomin ()
@@ -129,7 +133,7 @@
 
 (defun zoomout ()
   (interactive)
-  (set-face-attribute 'default nil :height 130))
+  (set-face-attribute 'default nil :height 110))
 
 ;; Remove the useless stuff
 (scroll-bar-mode -1)
@@ -170,7 +174,9 @@
 
 
 (use-package js2-mode
-  :ensure t)
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.mjs\\'" . js2-mode)))
 
 ;; Helm
 (use-package helm
@@ -261,7 +267,7 @@
 (use-package yaml-mode
   :ensure t)
 
-(require 'org-team)
+;; (require 'org-team)
 
 ;; ESC
 (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
@@ -282,7 +288,7 @@
 (global-set-key (kbd "C-x C-2") 'MCSH/split-below)
 
 ;; Line
-(linum-mode 1)
+;; (linum-mode 1)
 
 ;; git
 (use-package magit
@@ -292,7 +298,7 @@
   )
 
 ;; Linum mode
-(global-linum-mode)
+;; (global-linum-mode)
 
 ;; Stop the bloody beep
 ; (global-set-key (kbd "<mouse-6>") 'ignore)
@@ -428,6 +434,7 @@
   :config
   (projectile-mode +1)
   (setq projectile-globally-ignored-directories (append '("node_modules") projectile-globally-ignored-directories))
+  (setq projectile-indexing-method 'hybrid)
   (define-key projectile-mode-map (kbd "C-c C-f") 'projectile-find-file)
   (define-key projectile-mode-map (kbd "C-c f") 'projectile-find-file)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
@@ -580,7 +587,7 @@
   :ensure t)
 
 ;; Load current buffers if available
-(desktop-save-mode 1)
+;; (desktop-save-mode 1)
 
 ;; lua
 
@@ -588,24 +595,24 @@
   :ensure t)
 
 ;;
-(use-package org-journal
-  :ensure t
-  :custom
-  (org-journal-dir "~/writing/journal/")
-  (org-journal-file-format "%Y-%m-%d")
-  (org-journal-date-format "%e %b %Y (%A)")
-  )
+;; (use-package org-journal
+;;   :ensure t
+;;   :custom
+;;   (org-journal-dir "~/writing/journal/")
+;;   (org-journal-file-format "%Y-%m-%d")
+;;   (org-journal-date-format "%e %b %Y (%A)")
+;;   )
 
-(use-package org-pomodoro
-  :ensure t
-  :custom
-  (org-pomodoro-keep-killed-pomodoro-time t))
+;; (use-package org-pomodoro
+;;   :ensure t
+;;   :custom
+;;   (org-pomodoro-keep-killed-pomodoro-time t))
 
-(use-package org-edna
-  :ensure t
-  :config
-  (org-edna-mode)
-  )
+;; (use-package org-edna
+;;   :ensure t
+;;   :config
+;;   (org-edna-mode)
+;;   )
 
 (use-package glsl-mode
   :ensure t)
@@ -666,6 +673,8 @@
   :config
   (evil-define-key 'normal slime-mode-map (kbd "g d") 'slime-edit-definition)
   (evil-define-key 'normal slime-mode-map (kbd "g t d") 'slime-edit-definition-other-window)
+  (evil-define-key 'normal slime-mode-map (kbd "g b") 'slime-pop-find-definition-stack)
+  (evil-define-key 'normal slime-mode-map (kbd "g h") 'slime-documentation-lookup)
   )
 
 ;; Replace "sbcl" with the path to your implementation
@@ -779,90 +788,90 @@
 (add-to-list 'auto-coding-alist '("\\.envy" . default-generic-mode))
 
 ;; roam
-(setq org-directory (concat (getenv "HOME") "/src/roam/"))
+;; (setq org-directory (concat (getenv "HOME") "/src/roam/"))
 
-(use-package org-roam
-  :after org
-  :ensure t
-  :init (setq org-roam-v2-ack t)
-  :custom
-  (org-roam-directory (file-truename org-directory))
-  (org-roam-complete-everywhere t)
-  (org-roam-capture-templates
-   '(
-     ("d" "default" plain "%?"
-      :target (file+head "${slug}.org" "#+title: ${title}\n#+date: %U\n") :unnarrowed t :immediate-finish t)
-     ("b" "book notes" plain (file "~/src/roam/templates/BookNoteTemplate.org")
-      :target (file+head "${slug}.org" "#+title: ${title}\n#+date: %U\n") :unnarrowed t :immediate-finish t)
-     ("f" "finance" plain (file "~/src/roam/templates/FinanceTemplate.org")
-      :target (file+head "finance/${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: :Finance:draft:\n") :unarrowed t :immediate-finish t )
-     ("l" "programming language" plain (file "~/src/roam/templates/LanguageTemplate.org")
-      :target (file+head "${slug}.org" "#+title: ${title}\n#+date: %U\n") :unnarrowed t :immediate-finish t)))
-  :config
-  (org-roam-setup)
-  :bind (("C-c n f" . org-roam-node-find)
-         ("C-c n g" . org-roam-graph)
-         ("C-c n r" . org-roam-node-random)
-         ("C-c n c" . org-roam-capture)
-         ("C-c n J" . org-roam-dailies-goto-today)
-         (:map org-mode-map
-               (("C-c n i" . org-roam-node-insert)
-                ("C-c n o" . org-id-get-create)
-                ("C-c n t" . org-roam-tag-add)
-                ("C-c n a" . org-roam-alias-add)
-                ("C-c n l" . org-roam-buffer-toggle)
-                ("C-c n b" . helm-bibtex)
-                ("C-M-i" . completion-at-point))))
-  :bind-keymap
-  ("C-c n j" . org-roam-dailies-map))
+;; (use-package org-roam
+;;   :after org
+;;   :ensure t
+;;   :init (setq org-roam-v2-ack t)
+;;   :custom
+;;   (org-roam-directory (file-truename org-directory))
+;;   (org-roam-complete-everywhere t)
+;;   (org-roam-capture-templates
+;;    '(
+;;      ("d" "default" plain "%?"
+;;       :target (file+head "${slug}.org" "#+title: ${title}\n#+date: %U\n") :unnarrowed t :immediate-finish t)
+;;      ("b" "book notes" plain (file "~/src/roam/templates/BookNoteTemplate.org")
+;;       :target (file+head "${slug}.org" "#+title: ${title}\n#+date: %U\n") :unnarrowed t :immediate-finish t)
+;;      ("f" "finance" plain (file "~/src/roam/templates/FinanceTemplate.org")
+;;       :target (file+head "finance/${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: :Finance:draft:\n") :unarrowed t :immediate-finish t )
+;;      ("l" "programming language" plain (file "~/src/roam/templates/LanguageTemplate.org")
+;;       :target (file+head "${slug}.org" "#+title: ${title}\n#+date: %U\n") :unnarrowed t :immediate-finish t)))
+;;   :config
+;;   (org-roam-setup)
+;;   :bind (("C-c n f" . org-roam-node-find)
+;;          ("C-c n g" . org-roam-graph)
+;;          ("C-c n r" . org-roam-node-random)
+;;          ("C-c n c" . org-roam-capture)
+;;          ("C-c n J" . org-roam-dailies-goto-today)
+;;          (:map org-mode-map
+;;                (("C-c n i" . org-roam-node-insert)
+;;                 ("C-c n o" . org-id-get-create)
+;;                 ("C-c n t" . org-roam-tag-add)
+;;                 ("C-c n a" . org-roam-alias-add)
+;;                 ("C-c n l" . org-roam-buffer-toggle)
+;;                 ("C-c n b" . helm-bibtex)
+;;                 ("C-M-i" . completion-at-point))))
+;;   :bind-keymap
+;;   ("C-c n j" . org-roam-dailies-map))
 
-(defadvice org-roam-insert (around put-cursor-after-text activate)
-  "Make it so that org roam insert cursor goes after the inserted text"
-  (insert " ")
-  (save-excursion
-    (backward-char)
-    ad-do-it)
-  (insert " "))
+;; (defadvice org-roam-insert (around put-cursor-after-text activate)
+;;   "Make it so that org roam insert cursor goes after the inserted text"
+;;   (insert " ")
+;;   (save-excursion
+;;     (backward-char)
+;;     ad-do-it)
+;;   (insert " "))
 
-(defun mcsh/tag-new-node-as-draft ()
-  (org-roam-tag-add '("draft")))
-(add-hook 'org-roam-capture-new-node-hook #'mcsh/tag-new-node-as-draft)
+;; (defun mcsh/tag-new-node-as-draft ()
+;;   (org-roam-tag-add '("draft")))
+;; (add-hook 'org-roam-capture-new-node-hook #'mcsh/tag-new-node-as-draft)
 
-(add-to-list 'display-buffer-alist
-             '("\\*org-roam\\*"
-               (display-buffer-in-side-window)
-               (side . right)
-               (slot . 0)
-               (window-width . 0.33)
-               (window-parameters . ((no-other-window . t)
-                                     (no-delete-other-windows . t)))))
+;; (add-to-list 'display-buffer-alist
+;;              '("\\*org-roam\\*"
+;;                (display-buffer-in-side-window)
+;;                (side . right)
+;;                (slot . 0)
+;;                (window-width . 0.33)
+;;                (window-parameters . ((no-other-window . t)
+;;                                      (no-delete-other-windows . t)))))
 
-(setq org-roam-mode-section-functions
-      (list #'org-roam-backlinks-section
-            #'org-roam-reflinks-section
-            #'org-roam-unlinked-references-section
-            ))
+;; (setq org-roam-mode-section-functions
+;;       (list #'org-roam-backlinks-section
+;;             #'org-roam-reflinks-section
+;;             #'org-roam-unlinked-references-section
+;;             ))
 
-(require 'org-roam-protocol)
+;; (require 'org-roam-protocol)
 
-(setq org-roam-dailies-directory "daily/")
+;; (setq org-roam-dailies-directory "daily/")
 
-(setq org-roam-dailies-capture-templates
-      '(("d" "default" entry
-         "* %?"
-         :target (file+head "%<%Y-%m-%d>.org"
-                            "#+title: %<%Y-%m-%d>\n"))))
+;; (setq org-roam-dailies-capture-templates
+;;       '(("d" "default" entry
+;;          "* %?"
+;;          :target (file+head "%<%Y-%m-%d>.org"
+;;                             "#+title: %<%Y-%m-%d>\n"))))
 
-(use-package deft
-  :after org
-  :ensure t
-  :bind
-  ("C-c n d" . deft)
-  :custom
-  (deft-recursive t)
-  (deft-use-filter-string-for-filename t)
-  (deft-default-extension "org")
-  (deft-directory org-roam-directory))
+;; (use-package deft
+;;   :after org
+;;   :ensure t
+;;   :bind
+;;   ("C-c n d" . deft)
+;;   :custom
+;;   (deft-recursive t)
+;;   (deft-use-filter-string-for-filename t)
+;;   (deft-default-extension "org")
+;;   (deft-directory org-roam-directory))
 
 ;; winner mode (window change mode)
 (winner-mode +1)
@@ -874,71 +883,71 @@
 
 ;; this is an alpha package...
 
-(use-package websocket
-  :ensure t)
-(use-package simple-httpd
-  :ensure t)
-
-(add-to-list 'load-path "~/.emacs.d/org-roam-ui/")
-(load-library "org-roam-ui")
-;; (use-package org-roam-ui
+;; (use-package websocket
+;;   :ensure t)
+;; (use-package simple-httpd
 ;;   :ensure t)
 
-(setq org-roam-ui-sync-theme t
-          org-roam-ui-follow t
-          org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start t)
+;; (add-to-list 'load-path "~/.emacs.d/org-roam-ui/")
+;; (load-library "org-roam-ui")
+;; ;; (use-package org-roam-ui
+;; ;;   :ensure t)
+
+;; (setq org-roam-ui-sync-theme t
+;;           org-roam-ui-follow t
+;;           org-roam-ui-update-on-save t
+;;           org-roam-ui-open-on-start t)
 
 ;; end of org-roam-ui
 
 ;; org-babel
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((ruby . t)
-   (shell . t)
-   (python . t)
-   (dot . t)
-   (gnuplot . t)
-   (R . t)))
+;; (org-babel-do-load-languages
+;;  'org-babel-load-languages
+;;  '((ruby . t)
+;;    (shell . t)
+;;    (python . t)
+;;    (dot . t)
+;;    (gnuplot . t)
+;;    (R . t)))
 
-(use-package ess
-  :ensure t)
+;; (use-package ess
+;;   :ensure t)
 
-;; org-ref (for citations)
-(use-package org-ref
-  :ensure t
-  :config
-  (setq org-ref-bibliography-notes "~/src/roam/bibnotes.org"
-        org-ref-default-bibliography '("~/src/bibs/library.bib")
-        org-ref-pdf-directory "~/src/manitoba/2.ref/")
-  (setq bibtex-completion-bibliography "~/src/bibs/library.bib"
-        bibtex-completion-library-path "~/src/manitoba/2.ref"
-        bibtex-completion-notes-path "~/src/roam/"))
+;; ;; org-ref (for citations)
+;; (use-package org-ref
+;;   :ensure t
+;;   :config
+;;   (setq org-ref-bibliography-notes "~/src/roam/bibnotes.org"
+;;         org-ref-default-bibliography '("~/src/bibs/library.bib")
+;;         org-ref-pdf-directory "~/src/manitoba/2.ref/")
+;;   (setq bibtex-completion-bibliography "~/src/bibs/library.bib"
+;;         bibtex-completion-library-path "~/src/manitoba/2.ref"
+;;         bibtex-completion-notes-path "~/src/roam/"))
 
 
-(defun mcsh/bibtex-completion-format-citation-org-cite (keys)
-  "Format org-links using Org mode's own cite syntax."
-  (format "cite:%s"
-    (s-join ";"
-            (--map (format "%s" it) keys))))
+;; (defun mcsh/bibtex-completion-format-citation-org-cite (keys)
+;;   "Format org-links using Org mode's own cite syntax."
+;;   (format "cite:%s"
+;;     (s-join ";"
+;;             (--map (format "%s" it) keys))))
 
-(use-package helm-bibtex
-  :ensure t
-  :config
-  (setq bibtex-completion-format-citation-functions
-        '((org-mode . mcsh/bibtex-completion-format-citation-org-cite)
-          (latex-mode . bibtex-completion-format-citation-cite)
-          (markdown-mode . bibtex-completion-format-citation-pandoc-citeproc)
-          (python-mode . bibtex-completion-format-citation-sphinxcontrib-bibtex)
-          (rst-mode . bibtex-completion-format-citation-sphinxcontrib-bibtex)
-          (default . bibtex-completion-format-citation-default)))
-  (helm-add-action-to-source "Insert Link" 'helm-bibtex-insert-citation helm-source-bibtex 0)
-  )
+;; (use-package helm-bibtex
+;;   :ensure t
+;;   :config
+;;   (setq bibtex-completion-format-citation-functions
+;;         '((org-mode . mcsh/bibtex-completion-format-citation-org-cite)
+;;           (latex-mode . bibtex-completion-format-citation-cite)
+;;           (markdown-mode . bibtex-completion-format-citation-pandoc-citeproc)
+;;           (python-mode . bibtex-completion-format-citation-sphinxcontrib-bibtex)
+;;           (rst-mode . bibtex-completion-format-citation-sphinxcontrib-bibtex)
+;;           (default . bibtex-completion-format-citation-default)))
+;;   (helm-add-action-to-source "Insert Link" 'helm-bibtex-insert-citation helm-source-bibtex 0)
+;;   )
 
-(use-package org-roam-bibtex
-  :ensure t
-  :config
-  (org-roam-bibtex-mode 1))
+;; (use-package org-roam-bibtex
+;;   :ensure t
+;;   :config
+;;   (org-roam-bibtex-mode 1))
 
 ;; csv
 
@@ -1011,10 +1020,10 @@
 (use-package pyvenv
   :ensure t)
 
-;; org refile
-(setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
-(setq org-outline-path-complete-in-steps nil) ;; so completion shows full paths
-(setq org-refile-use-outline-path 'file)
+;; ;; org refile
+;; (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
+;; (setq org-outline-path-complete-in-steps nil) ;; so completion shows full paths
+;; (setq org-refile-use-outline-path 'file)
 
 ;; latex
 
@@ -1055,35 +1064,35 @@
 ;;   (setq company-show-numbers t))
 
 ;; copilot
-(use-package editorconfig
-  :ensure t)
+;;(use-package editorconfig
+  ;;:ensure t)
 
 ; Load copilot.el, modify this path to your local path.
-(load-file "~/.emacs.d/copilot.el/copilot.el")
+;;(load-file "~/.emacs.d/copilot.el/copilot.el")
 
-(add-hook 'prog-mode-hook 'copilot-mode)
+;;(add-hook 'prog-mode-hook 'copilot-mode)
 ;; (customize-set-variable 'copilot-enable-predicates
 ;;                         '(evil-insert-state-p))
 
 ; complete by copilot first, then company-mode
-(defun my-tab ()
-  (interactive)
-  (or (copilot-accept-completion)
-      (company-indent-or-complete-common nil)))
+;;(defun my-tab ()
+  ;;(interactive)
+  ;;(or (copilot-accept-completion)
+      ;;(company-indent-or-complete-common nil)))
 
 ; modify company-mode behaviors
-(with-eval-after-load 'company
-  ; disable inline previews
-  (delq 'company-preview-if-just-one-frontend company-frontends)
-  ; enable tab completion
-  (define-key company-mode-map (kbd "C-<tab>") 'my-tab)
-  (define-key company-mode-map (kbd "C-TAB") 'my-tab)
-  (define-key company-active-map (kbd "C-<tab>") 'my-tab)
-  (define-key company-active-map (kbd "C-TAB") 'my-tab))
+;;(with-eval-after-load 'company
+  ;;; disable inline previews
+  ;;(delq 'company-preview-if-just-one-frontend company-frontends)
+  ;;; enable tab completion
+  ;;(define-key company-mode-map (kbd "C-<tab>") 'my-tab)
+  ;;(define-key company-mode-map (kbd "C-TAB") 'my-tab)
+  ;;(define-key company-active-map (kbd "C-<tab>") 'my-tab)
+  ;;(define-key company-active-map (kbd "C-TAB") 'my-tab))
 
-(with-eval-after-load 'copilot
-  (evil-define-key 'insert copilot-mode-map
-    (kbd "C-<tab>") #'my-tab))
+;;(with-eval-after-load 'copilot
+  ;;(evil-define-key 'insert copilot-mode-map
+    ;;(kbd "C-<tab>") #'my-tab))
 
 ; provide completion when typing
 ;; (add-hook 'post-command-hook (lambda ()
@@ -1105,20 +1114,20 @@
 (load "/home/sajjad/quicklisp/clhs-use-local.el" t) ;; C-c C-d h
 
 ;; org agenda and windmove fix
-(require 'org-windmove)
+;; (require 'org-windmove)
 
 ;; org-gcal
 ;; note: set org-gcal-client-id and org-gcal-client-secret in secrets.el
 
-(setq org-gcal-fetch-file-alist
-      '(("sajjadheydari74@gmail.com" . "~/src/personal/schedule.org")))
+;; (setq org-gcal-fetch-file-alist
+;;       '(("sajjadheydari74@gmail.com" . "~/src/personal/schedule.org")))
 
 (require 'my-secrets)
 
-(use-package org-gcal
-  :ensure t)
+;; (use-package org-gcal
+;;   :ensure t)
 
-(require 'org-gcal)
+;; (require 'org-gcal)
 
 (setq plstore-cache-passphrase-for-symmetric-encryption t)
 
@@ -1147,4 +1156,37 @@
 (defun rpi-home-dir ()
   (interactive)
   (find-file (concat "/ssh:192.168.0.164:" "/home/sajjad/")))
+
+(defun connect-tornado ()
+  (interactive)
+  (setq mslime-dirlist '(("/home/sajjad/src/2023/3.torn/" . "/home/ubuntu/tornado/")
+                         ("/home/sajjad/common-lisp/clog/" . "/home/ubuntu/quicklisp/dists/quicklisp/software/clog-20230618-git/")
+                         ("/home/sajjad/quicklisp/dists/quicklisp/software/lispcord-20200925-git/" . "/home/ubuntu/quicklisp/dists/quicklisp/software/lispcord-20230618-git/")
+                         ("/home/sajjad/quicklisp/" . "/home/ubuntu/quicklisp/")
+                         ))
+    (setq slime-from-lisp-filename-function
+          (lambda (f)
+            (let ((dirs (car (seq-filter (lambda (x) (string-prefix-p (cdr x) f)) mslime-dirlist))))
+              (if dirs
+                  (concat (car dirs) (substring f (length (cdr dirs))))
+                f))))
+    (setq slime-to-lisp-filename-function
+          (lambda (f)
+            (let ((dirs (car (seq-filter (lambda (x) (string-prefix-p (car x) f)) mslime-dirlist))))
+              (if dirs
+                  (concat (cdr dirs) (substring f (length (car dirs))))
+                f)))))
+
+(connect-tornado)
+
+;; Just follow the shortcut please
+(setq vc-follow-symlinks t)
+
+;; line number mode
+(global-display-line-numbers-mode)
+
+;; new frame size
+(add-hook 'after-make-frame-functions '(lambda (fr) (set-frame-height fr 40) (set-frame-width fr 80)))
+
+
 ;; EOF
